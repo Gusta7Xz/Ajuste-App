@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Ajustes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="manifest" href="manifest.json">
+<style>
+body {margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif;background:#000;color:#fff;}
+.container {max-width:430px;margin:0 auto;background:#000;min-height:100vh;position:relative;}
+.header {background:#1c1c1e;padding:12px 0;text-align:center;font-size:17px;font-weight:600;position:relative;}
+.back-button {position:absolute;left:16px;top:12px;color:#007aff;font-size:17px;cursor:pointer;display:flex;align-items:center;}
+.back-button i {margin-right:6px;}
+.section {background:#1c1c1e;border-radius:10px;margin:20px 15px;overflow:hidden;}
+.item {display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;}
+.item:last-child{}
+.item:hover{background:#2c2c2e;}
+.item-content{display:flex;align-items:center;flex-grow:1;min-width:0;}
+.item-icon{width:29px;height:29px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:#fff;font-size:14px;margin-right:15px;flex-shrink:0;}
+.item-text{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.item-subtitle{font-size:13px;color:#8e8e93;margin-top:2px;}
+.arrow{color:#8e8e93;font-size:14px;margin-left:10px;}
+.toggle{width:51px;height:31px;background:#3a3a3c;border-radius:15.5px;position:relative;transition:background .25s;flex-shrink:0;}
+.toggle::after{content:'';width:27px;height:27px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .25s;box-shadow:0 1px 2px rgba(0,0,0,.5);}
+.toggle.active{background:#30d158;}
+.toggle.active::after{transform:translateX(20px);}
+.slider-container{display:flex;align-items:center;width:100%;gap:8px;}
+.slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:#3a3a3c;border-radius:2px;outline:none;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:#007aff;border-radius:50%;cursor:pointer;box-shadow:0 0 0 1px rgba(0,0,0,.3);}
+.value{font-size:17px;color:#007aff;white-space:nowrap;margin:0 6px;width:50px;text-align:center;}
+.plus-minus{display:flex;align-items:center;gap:6px;}
+.plus-minus button{background:#2c2c2e;color:#fff;border:none;font-size:16px;width:26px;height:26px;border-radius:50%;cursor:pointer;}
+.plus-minus button:hover{background:#3a3a3c;}
+.button{background:#007aff;color:#fff;border:none;padding:12px 16px;border-radius:10px;font-size:17px;width:100%;cursor:pointer;}
+.button:hover{background:#005ecb;}
+.radio-group{display:flex;flex-direction:column;}
+.radio-item{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;}
+.radio-item:last-child{}
+.radio-item span{font-size:17px;}
+.radio-dot{width:22px;height:22px;border-radius:50%;border:2px solid #8e8e93;position:relative;flex-shrink:0;}
+.radio-dot.active{border-color:#007aff;}
+.radio-dot.active::after{content:'';width:10px;height:10px;background:#007aff;border-radius:50%;position:absolute;top:4px;left:4px;}
+.screen{display:none;position:absolute;inset:0;background:#000;}
+.screen.active{display:block;}
+.profile{display:flex;align-items:center;gap:12px;padding:16px;}
+.profile-icon{width:50px;height:50px;background:#007aff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;color:#fff;}
+.profile-name{font-size:17px;font-weight:600;}
+.ram-item .item-text {white-space:normal; word-wrap:break-word;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- MAIN SCREEN -->
+<div class="screen active" id="main-screen">
+<div class="header">Ajustes</div>
+<div class="profile"><div class="profile-icon">G7</div><div class="profile-name">Gusta7</div></div>
+
+<div class="section">
+    <div class="item">
+        <div class="item-content">
+            <div class="item-icon" style="background:#007aff;"><i class="fas fa-wifi"></i></div>
+            <div style="min-width:0;"><div class="item-text">Wi-Fi</div><div class="item-subtitle" id="wifi-sub">Carregando...</div></div>
+        </div>
+        <i class="fas fa-chevron-right arrow"></i>
+    </div>
+    <div class="item" onclick="showScreen('touch-screen')">
+        <div class="item-content">
+            <div class="item-icon" style="background:#ff9500;"><i class="fas fa-hand-paper"></i></div>
+            <div class="item-text">Toque</div>
+        </div>
+        <i class="fas fa-chevron-right arrow"></i>
+    </div>
+</div>
+
+<div class="section">
+    <div class="item">
+        <div class="item-content">
+            <div class="item-icon" style="background:#34c759;"><i class="fas fa-tachometer-alt"></i></div>
+            <div><div class="item-text">FPS para Desempenho</div><div class="item-subtitle" id="fps-status">Melhora o desempenho do celular</div></div>
+        </div>
+        <div class="toggle" id="fps-toggle" onclick="toggleFPS()"></div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="item" onclick="showScreen('advanced-screen')">
+        <div class="item-content">
+            <div class="item-icon" style="background:#ff9f0a;"><i class="fas fa-cogs"></i></div>
+            <div class="item-text">Configurações Avançadas</div>
+        </div>
+        <i class="fas fa-chevron-right arrow"></i>
+    </div>
+    <div class="item" onclick="showScreen('sensitivity-screen')">
+        <div class="item-content">
+            <div class="item-icon" style="background:#5856d6;"><i class="fas fa-hand-pointer"></i></div>
+            <div class="item-text">Sensibilidade Avançada</div>
+        </div>
+        <i class="fas fa-chevron-right arrow"></i>
+    </div>
+    <div class="item" onclick="showScreen('selection-screen')">
+        <div class="item-content">
+            <div class="item-icon" style="background:#ff2d55;"><i class="fas fa-bullseye"></i></div>
+            <div class="item-text">Tipo de Seleção</div>
+        </div>
+        <i class="fas fa-chevron-right arrow"></i>
+    </div>
+</div>
+</div>
+
+<!-- ADVANCED SCREEN -->
+<div class="screen" id="advanced-screen">
+<div class="header"><div class="back-button" onclick="showScreen('main-screen')"><i class="fas fa-chevron-left"></i> Voltar</div>Configurações Avançadas</div>
+<div class="section">
+    <div class="item"><div class="item-text">Melhorar Toque da Tela</div><div class="toggle" id="touch-toggle" onclick="toggleTouch()"></div></div>
+    <div class="item"><div class="item-text">Taxa de Atualização</div>
+        <div class="plus-minus">
+            <button onclick="changeValue('refresh-rate',-1,'rate-value','Hz')">-</button>
+            <input class="slider" id="refresh-rate" type="range" min="60" max="120" value="60">
+            <button onclick="changeValue('refresh-rate',1,'rate-value','Hz')">+</button>
+            <div class="value" id="rate-value">60 Hz</div>
+        </div>
+    </div>
+    <div class="item"><div class="item-text">Velocidade da Sensibilidade</div>
+        <div class="plus-minus">
+            <button onclick="changeValue('speed-slider',-1,'speed-value')">-</button>
+            <input class="slider" id="speed-slider" type="range" min="0" max="100" value="50">
+            <button onclick="changeValue('speed-slider',1,'speed-value')">+</button>
+            <div class="value" id="speed-value">50</div>
+        </div>
+    </div>
+    <div class="item ram-item">
+        <div class="item-content">
+            <div><div class="item-text">Limpar Memória RAM</div><div class="item-subtitle" id="ram-status">Libera espaço na memória</div></div>
+        </div>
+        <button class="button" onclick="clearRAM()">Limpar</button>
+    </div>
+</div>
+</div>
+
+<!-- SENSITIVITY SCREEN -->
+<div class="screen" id="sensitivity-screen">
+<div class="header"><div class="back-button" onclick="showScreen('main-screen')"><i class="fas fa-chevron-left"></i> Voltar</div>Sensibilidade Avançada</div>
+<div class="section">
+    <div class="item"><div class="item-text">Melhorar Sensibilidade</div><div class="toggle" id="sens-toggle" onclick="toggleSens()"></div></div>
+    <div class="item"><div class="item-text">Estabilizar Pixels</div><div class="toggle" id="pixel-toggle" onclick="togglePixel()"></div></div>
+    <div class="item"><div class="item-text">Calibrar DPI</div>
+        <div class="plus-minus">
+            <button onclick="changeValue('dpi-slider',-1,'dpi-value','DPI')">-</button>
+            <input class="slider" id="dpi-slider" type="range" min="200" max="400" value="300">
+            <button onclick="changeValue('dpi-slider',1,'dpi-value','DPI')">+</button>
+            <div class="value" id="dpi-value">300 DPI</div>
+        </div>
+    </div>
+    <div class="item"><div class="item-text">Sensibilidade IA</div><div class="toggle" id="ai-toggle" onclick="toggleAI()"></div></div>
+</div>
+</div>
+
+<!-- TOUCH SCREEN -->
+<div class="screen" id="touch-screen">
+<div class="header"><div class="back-button" onclick="showScreen('main-screen')"><i class="fas fa-chevron-left"></i> Voltar</div>Toque</div>
+<div class="section">
+    <div class="radio-group">
+        <div class="radio-item" onclick="setTouchType('rapido')"><span>Rápido</span><div class="radio-dot" id="dot-rapido"></div></div>
+        <div class="radio-item" onclick="setTouchType('padrao')"><span>Padrão</span><div class="radio-dot" id="dot-padrao"></div></div>
+        <div class="radio-item" onclick="setTouchType('acelerado')"><span>Acelerado</span><div class="radio-dot" id="dot-acelerado"></div></div>
+    </div>
+</div>
+</div>
+
+<!-- TYPE SELECTION SCREEN -->
+<div class="screen" id="selection-screen">
+<div class="header"><div class="back-button" onclick="showScreen('main-screen')"><i class="fas fa-chevron-left"></i> Voltar</div>Tipo de Seleção</div>
+<div class="section">
+    <div class="radio-group" id="selection-group">
+        <div class="radio-item" data-value="individual" onclick="setSelection('individual')">
+            <span>Individual</span>
+            <div class="radio-dot" id="dot-individual"></div>
+        </div>
+        <div class="radio-item" data-value="refinado" onclick="setSelection('refinado')">
+            <span>Refinado</span>
+            <div class="radio-dot" id="dot-refinado"></div>
+        </div>
+        <div class="radio-item" data-value="preciso" onclick="setSelection('preciso')">
+            <span>Preciso</span>
+            <div class="radio-dot" id="dot-preciso"></div>
+        </div>
+    </div>
+</div>
+<div class="section">
+    <div class="item">
+        <div class="item-text">Sensibilidade do Touch</div>
+        <div class="plus-minus">
+            <button onclick="changeValue('touch-sensitivity',-1,'touch-sensitivity-value')">-</button>
+            <input class="slider" id="touch-sensitivity" type="range" min="0" max="120" value="60">
+            <button onclick="changeValue('touch-sensitivity',1,'touch-sensitivity-value')">+</button>
+            <div class="value" id="touch-sensitivity-value">60</div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- WIFI SCREEN REMOVED -->
+
+</div>
+
+<script>
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function toggleFPS(){
+    const toggle = document.getElementById('fps-toggle');
+    const status = document.getElementById('fps-status');
+    if (!toggle.classList.contains('active')) {
+        status.textContent = 'Ativando...';
+        setTimeout(() => {
+            toggle.classList.add('active');
+            status.textContent = 'Ativado';
+        }, 1000);
+    } else {
+        toggle.classList.remove('active');
+        status.textContent = 'Melhora o desempenho do celular';
+    }
+}
+function toggleTouch(){document.getElementById('touch-toggle').classList.toggle('active');}
+function toggleSens(){document.getElementById('sens-toggle').classList.toggle('active');}
+function togglePixel(){document.getElementById('pixel-toggle').classList.toggle('active');}
+function toggleAI(){document.getElementById('ai-toggle').classList.toggle('active');}
+function clearRAM(){
+    const status = document.getElementById('ram-status');
+    status.textContent = 'Liberando...';
+    setTimeout(() => {
+        status.textContent = 'Liberada com sucesso!';
+        setTimeout(() => {
+            status.textContent = 'Libera espaço na memória';
+        }, 2000);
+    }, 1000);
+}
+function changeValue(sliderId,delta,valueId,unit=''){const s=document.getElementById(sliderId);let v=parseInt(s.value)+delta;v=Math.min(Math.max(v,s.min),s.max);s.value=v;document.getElementById(valueId).textContent=v+' '+unit;}
+function setTouchType(t){localStorage.setItem('touch_type',t);renderTouchType();}
+function renderTouchType(){const t=localStorage.getItem('touch_type')||'padrao';document.getElementById('dot-rapido').classList.toggle('active',t==='rapido');document.getElementById('dot-padrao').classList.toggle('active',t==='padrao');document.getElementById('dot-acelerado').classList.toggle('active',t==='acelerado');}
+function setSelection(t){localStorage.setItem('selection_type',t);renderSelection();}
+function renderSelection(){const t=localStorage.getItem('selection_type')||'individual';['individual','refinado','preciso'].forEach(v=>document.getElementById('dot-'+v).classList.toggle('active',v===t));}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('SW registrado'))
+        .catch(err => console.log('Erro no SW', err));
+}
+
+renderTouchType();
+renderSelection();
+</script>
+</body>
+</html>
